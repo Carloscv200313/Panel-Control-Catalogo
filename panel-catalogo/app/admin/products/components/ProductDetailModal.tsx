@@ -80,7 +80,6 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
                                         </p>
                                     </div>
                                 </div>
-
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2 text-[#26c6da]">
                                         <DollarSign className="w-3.5 h-3.5" />
