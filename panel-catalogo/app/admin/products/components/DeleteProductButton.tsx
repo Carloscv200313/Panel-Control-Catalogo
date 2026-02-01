@@ -39,18 +39,18 @@ export default function DeleteProductButton({ id }: { id: string }) {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-md p-0 overflow-hidden border-none rounded-[2.5rem] bg-white dark:bg-[#0f172a] shadow-2xl">
+            <DialogContent className="w-[95vw] sm:w-full max-w-md max-h-[90vh] overflow-y-auto sm:overflow-hidden p-0 border border-slate-200 rounded-[2.5rem] bg-white shadow-2xl">
                 <Card className="border-none shadow-none bg-transparent">
                     <CardHeader className="pt-8 flex flex-col items-center">
-                        <div className="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-full flex items-center justify-center mb-4">
+                        <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4">
                             <AlertCircle className="w-8 h-8 text-red-500" />
                         </div>
-                        <CardTitle className="text-xl font-black text-center dark:text-white leading-tight">
+                        <CardTitle className="text-xl font-black text-center text-slate-900 leading-tight">
                             ¿Estás seguro de que deseas eliminar este producto?
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="px-8 pb-8">
-                        <p className="text-gray-400 text-center text-sm font-medium">
+                        <p className="text-slate-500 text-center text-sm font-medium">
                             Esta acción no se puede deshacer. Se eliminará permanentemente de tu inventario.
                         </p>
                     </CardContent>
@@ -58,7 +58,7 @@ export default function DeleteProductButton({ id }: { id: string }) {
                         <Button
                             variant="ghost"
                             onClick={() => setOpen(false)}
-                            className="flex-1 h-12 rounded-xl font-bold text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5"
+                            className="flex-1 h-12 rounded-xl font-bold text-slate-500 hover:bg-slate-100"
                         >
                             Cancelar
                         </Button>

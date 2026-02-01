@@ -22,10 +22,10 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
-            <DialogContent className="max-w-3xl p-0 overflow-hidden border-none rounded-[2.5rem] bg-white dark:bg-[#0f172a] shadow-2xl shadow-black/30">
+            <DialogContent className="w-[95vw] sm:w-full max-w-3xl max-h-[90vh] overflow-y-auto sm:overflow-hidden p-0 border border-slate-200 rounded-[2.5rem] bg-white shadow-2xl">
                 <div className="flex flex-col md:flex-row min-h-[500px]">
                     {/* Left: Premium Image Showcase */}
-                    <div className="relative w-full md:w-1/2 h-80 md:h-auto bg-gray-50 dark:bg-[#1e293b]">
+                    <div className="relative w-full md:w-1/2 h-80 md:h-auto bg-slate-50">
                         {product.images?.[0] ? (
                             <Image
                                 src={product.images[0]}
@@ -35,7 +35,7 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
                                 priority
                             />
                         ) : (
-                            <div className="flex flex-col items-center justify-center h-full text-gray-200 dark:text-white/5">
+                            <div className="flex flex-col items-center justify-center h-full text-slate-300">
                                 <Box className="w-24 h-24 mb-4" />
                                 <span className="text-[10px] font-black uppercase tracking-[0.3em]">Sin Imagen</span>
                             </div>
@@ -63,19 +63,19 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
                                         {product.category?.name}
                                     </span>
                                 </div>
-                                <h2 className="text-3xl font-black dark:text-white leading-[1.1] tracking-tight">
+                                <h2 className="text-3xl font-black text-slate-900 leading-[1.1] tracking-tight">
                                     {product.name}
                                 </h2>
                             </div>
 
                             <div className="space-y-6">
                                 <div className="space-y-2">
-                                    <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500">
+                                    <div className="flex items-center gap-2 text-slate-500">
                                         <AlignLeft className="w-3.5 h-3.5" />
                                         <p className="text-[10px] font-black uppercase tracking-[0.2em]">Detalles del Producto</p>
                                     </div>
-                                    <div className="bg-gray-50/50 dark:bg-white/5 p-5 rounded-2xl border border-gray-100 dark:border-white/5">
-                                        <p className="text-sm text-gray-600 dark:text-gray-300 font-medium leading-relaxed italic">
+                                    <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                                        <p className="text-sm text-slate-600 font-medium leading-relaxed italic">
                                             &quot;{product.description}&quot;
                                         </p>
                                     </div>
@@ -89,14 +89,14 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
                                         <p className="text-4xl font-black text-[#26c6da] tracking-tighter">
                                             {formatCurrency(product.price)}
                                         </p>
-                                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">MXN</span>
+                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">MXN</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Actions Footer */}
-                        <div className="flex items-center gap-4 pt-10 mt-10 border-t border-gray-100 dark:border-white/5">
+                        <div className="flex items-center gap-4 pt-10 mt-10 border-t border-slate-200">
                             <div className="flex-1 drop-shadow-xl">
                                 <EditProductModal product={product} />
                             </div>
@@ -104,8 +104,8 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
                         </div>
 
                         {/* Decorative Background Icon */}
-                        <div className="absolute bottom-6 right-8 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
-                            <Sparkles className="w-32 h-32 text-black dark:text-white" />
+                        <div className="absolute bottom-6 right-8 opacity-[0.04] pointer-events-none">
+                            <Sparkles className="w-32 h-32 text-slate-200" />
                         </div>
                     </div>
                 </div>
