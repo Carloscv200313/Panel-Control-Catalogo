@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useFormStatus } from 'react-dom';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Lock, User, Eye, EyeOff, LogIn, Heart } from 'lucide-react';
+import { Lock, User, Eye, EyeOff, LogIn } from 'lucide-react';
 
 function SubmitButton() {
     const { pending } = useFormStatus();

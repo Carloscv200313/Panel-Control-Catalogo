@@ -6,13 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from '@/components/ui/select';
 import { useFormStatus } from 'react-dom';
 import Image from 'next/image';
 import {
@@ -27,17 +20,7 @@ import {
     Tag,
     AlignLeft
 } from 'lucide-react';
-
-const CATEGORIES = [
-    'Skincare',
-    'Maquillaje',
-    'Rostro',
-    'Ojos',
-    'Labios',
-    'Cabello',
-    'Fragancias',
-    'Cuidado Corporal'
-];
+import { CATEGORIES } from '@/lib/categories';
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -66,7 +49,7 @@ export default function NewProductModal() {
     const [state, formAction] = useActionState(createProduct, null);
     const [preview, setPreview] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
-    const [category, setCategory] = useState(CATEGORIES[0]);
+    const [categories, setCategories] = useState<string[]>([CATEGORIES[0].slug]);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -80,6 +63,12 @@ export default function NewProductModal() {
     function removeImage() {
         setPreview(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+
+    function toggleCategory(slug: string) {
+        setCategories((prev) =>
+            prev.includes(slug) ? prev.filter((item) => item !== slug) : [...prev, slug]
+        );
     }
 
     useEffect(() => {
@@ -110,11 +99,11 @@ export default function NewProductModal() {
                     Nuevo Producto
                 </Button>
             </DialogTrigger>
-            <DialogContent className="w-[95vw] sm:w-full max-w-4xl h-[90vh] sm:h-auto max-h-[90vh] p-0 border border-slate-200 rounded-[2.5rem] bg-white shadow-2xl">
-                <div className="flex flex-col h-full max-h-[90vh]">
+            <DialogContent className="w-[95vw] sm:w-full max-w-4xl h-[90vh] sm:h-auto max-h-[90vh] p-0 border border-slate-200 rounded-[2.5rem] bg-white shadow-2xl overflow-hidden flex flex-col">
+                <div className="flex-1 min-h-0 grid grid-rows-[auto,1fr]">
                     {/* Decorative Header */}
                     <div className="relative p-8 bg-linear-to-br from-[#26c6da]/10 via-transparent to-transparent border-b border-slate-200">
-                        <div className="absolute top-0 right-0 p-8 opacity-10">
+                        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
                             <Sparkles className="w-24 h-24 text-[#26c6da]" />
                         </div>
                         <div className="relative z-10">
@@ -126,10 +115,8 @@ export default function NewProductModal() {
                         </div>
                     </div>
 
-                    <form action={formAction} className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
-                        <div className="p-6 sm:p-8">
-                            <input type="hidden" name="categoryName" value={category} />
-
+                    <form action={formAction} className="min-h-0 grid grid-rows-[1fr,auto]">
+                        <div className="min-h-0 overflow-y-auto overscroll-contain custom-scrollbar p-6 sm:p-8">
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                                 {/* Left Side: Core Info */}
                                 <div className="lg:col-span-7 space-y-8">
@@ -159,20 +146,30 @@ export default function NewProductModal() {
                                             <div className="space-y-2 group">
                                                 <Label className="text-[11px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-2 ml-1 group-focus-within:text-[#26c6da] transition-colors">
                                                     <Sparkles className="w-3 h-3" />
-                                                    Categoría del Catálogo
+                                                    Categorías del Catálogo
                                                 </Label>
-                                                <Select value={category} onValueChange={setCategory}>
-                                                    <SelectTrigger className="h-14 rounded-2xl bg-white border border-slate-200 focus:ring-0 focus:border-[#26c6da]/30 text-base font-bold px-5 shadow-inner">
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                    <SelectContent className="rounded-2xl border border-slate-200 shadow-2xl">
-                                                        {CATEGORIES.map((cat) => (
-                                                            <SelectItem key={cat} value={cat} className="rounded-xl py-3 font-bold focus:bg-[#26c6da] focus:text-white cursor-pointer">
-                                                                {cat}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {CATEGORIES.map((category) => {
+                                                        const checked = categories.includes(category.slug);
+                                                        return (
+                                                            <label
+                                                                key={category.slug}
+                                                                className={`px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest cursor-pointer transition-all ${checked ? 'bg-[#26c6da] text-white border-[#26c6da]' : 'bg-white text-slate-500 border-slate-200 hover:border-[#26c6da]/40'}`}
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="categories"
+                                                                    value={category.slug}
+                                                                    checked={checked}
+                                                                    onChange={() => toggleCategory(category.slug)}
+                                                                    className="sr-only"
+                                                                />
+                                                                {category.label}
+                                                            </label>
+                                                        );
+                                                    })}
+                                                </div>
+                                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Puedes elegir varias</p>
                                             </div>
 
                                             <div className="space-y-2 group">

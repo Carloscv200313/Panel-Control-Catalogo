@@ -46,15 +46,14 @@ export async function createProduct(_prevState: unknown, formData: FormData) {
     const name = formData.get('name') as string;
     const description = formData.get('description') as string;
     const price = parseFloat(formData.get('price') as string);
-    const categoryName = formData.get('categoryName') as string;
+    const categories = formData.getAll('categories').map((value) => generateSlug(String(value)));
     const imageFile = formData.get('image') as File;
 
-    if (!name || !description || !price || !categoryName) {
+    if (!name || !description || !price || categories.length === 0) {
       return { message: 'Todos los campos son obligatorios' };
     }
 
     const slug = generateSlug(name);
-    const categorySlug = generateSlug(categoryName);
 
     let imageUrl = '';
     if (imageFile && imageFile.size > 0) {
@@ -78,11 +77,7 @@ export async function createProduct(_prevState: unknown, formData: FormData) {
       description,
       price,
       images: imageUrl ? [imageUrl] : [],
-      category: {
-        name: categoryName,
-        slug: categorySlug,
-      },
-      isActive: true,
+      categories,
     });
 
     revalidatePath('/admin/products');
@@ -111,18 +106,25 @@ export async function updateProduct(id: string, _prevState: unknown, formData: F
         const name = formData.get('name') as string;
         const description = formData.get('description') as string;
         const price = parseFloat(formData.get('price') as string);
-        const categoryName = formData.get('categoryName') as string;
+        const categories = formData.getAll('categories').map((value) => generateSlug(String(value)));
         const imageFile = formData.get('image') as File;
 
-        const categorySlug = generateSlug(categoryName);
-        
+        if (!name || !description || !price || categories.length === 0) {
+            return { message: 'Todos los campos son obligatorios', success: false };
+        }
+
         // Prepare update object
-        const updateData: any = {
+        const updateData: {
+            name: string;
+            description: string;
+            price: number;
+            categories: string[];
+            images?: string[];
+        } = {
             name,
             description,
             price,
-            'category.name': categoryName,
-            'category.slug': categorySlug,
+            categories,
         };
 
         if (imageFile && imageFile.size > 0) {

@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from 'mongoose';
+import { Schema, model, models } from 'mongoose';
 
 const ProductSchema = new Schema(
   {
@@ -7,12 +7,12 @@ const ProductSchema = new Schema(
     description: { type: String, required: true },
     price: { type: Number, required: true },
     images: { type: [String], default: [] },
+    categories: { type: [String], default: [], index: true },
     category: {
-      name: { type: String, required: true },
-      slug: { type: String, required: true },
+      name: { type: String },
+      slug: { type: String },
     },
     tags: { type: [String], default: [] },
-    isActive: { type: Boolean, default: true, index: true },
   },
   {
     timestamps: true,

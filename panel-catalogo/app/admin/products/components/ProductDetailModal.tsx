@@ -8,6 +8,7 @@ import DeleteProductButton from './DeleteProductButton'
 import EditProductModal from './EditProductModal'
 import { formatCurrency } from '@/lib/utils'
 import { Product } from '@/types/product'
+import { getCategoryLabel, slugifyCategoryName } from '@/lib/categories'
 
 interface ProductDetailModalProps {
     product: Product
@@ -16,6 +17,21 @@ interface ProductDetailModalProps {
 
 export default function ProductDetailModal({ product, children }: ProductDetailModalProps) {
     const [open, setOpen] = useState(false)
+    const categories =
+        product.categories && product.categories.length > 0
+            ? product.categories
+            : product.category?.slug
+                ? [product.category.slug]
+                : product.category?.name
+                    ? [slugifyCategoryName(product.category.name)]
+                    : []
+
+    const categoryLabels = categories
+        .map((category) => getCategoryLabel(category))
+        .sort((a, b) => a.localeCompare(b));
+    const maxCategories = 3;
+    const visibleCategories = categoryLabels.slice(0, maxCategories);
+    const hiddenCount = Math.max(categoryLabels.length - maxCategories, 0);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -41,14 +57,6 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
                             </div>
                         )}
 
-                        {/* Status Badge */}
-                        <div className="absolute top-6 left-6">
-                            <div className={`px-4 py-1.5 ${product.isActive !== false ? 'bg-green-500/90' : 'bg-red-500/90'} backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-xl flex items-center gap-2`}>
-                                <div className={`w-2 h-2 rounded-full ${product.isActive !== false ? 'bg-white animate-pulse' : 'bg-white/50'}`} />
-                                {product.isActive !== false ? 'Producto Activo' : 'Producto Inactivo'}
-                            </div>
-                        </div>
-
                         {/* Top Right Close hint (Optional, Dialog already has close) */}
                         <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent pointer-events-none" />
                     </div>
@@ -57,11 +65,27 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
                     <div className="flex-1 p-8 md:p-10 flex flex-col justify-between relative">
                         <div className="space-y-8">
                             <div className="space-y-3">
-                                <div className="flex items-center gap-2">
-                                    <span className="px-3 py-1 bg-[#26c6da]/10 text-[#26c6da] text-[10px] font-extrabold uppercase tracking-widest rounded-lg flex items-center gap-2">
-                                        <Tag className="w-3 h-3" />
-                                        {product.category?.name}
-                                    </span>
+                                <div className="flex flex-wrap items-center gap-2">
+                                    {categoryLabels.length > 0 ? (
+                                        <>
+                                            {visibleCategories.map((label) => (
+                                                <span key={label} className="px-3 py-1 bg-[#26c6da]/10 text-[#26c6da] text-[10px] font-extrabold uppercase tracking-widest rounded-lg flex items-center gap-2">
+                                                    <Tag className="w-3 h-3" />
+                                                    {label}
+                                                </span>
+                                            ))}
+                                            {hiddenCount > 0 && (
+                                                <span className="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-extrabold uppercase tracking-widest rounded-lg">
+                                                    +{hiddenCount} más
+                                                </span>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <span className="px-3 py-1 bg-[#26c6da]/10 text-[#26c6da] text-[10px] font-extrabold uppercase tracking-widest rounded-lg flex items-center gap-2">
+                                            <Tag className="w-3 h-3" />
+                                            Cosmético
+                                        </span>
+                                    )}
                                 </div>
                                 <h2 className="text-3xl font-black text-slate-900 leading-[1.1] tracking-tight">
                                     {product.name}
@@ -83,8 +107,9 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2 text-[#26c6da]">
                                         <DollarSign className="w-3.5 h-3.5" />
-                                        <p className="text-[10px] font-black uppercase tracking-[0.2em]">Precio Sugerido</p>
+                                        <p className="text-[10px] font-black uppercase tracking-[0.2em]">Precio sugerido</p>
                                     </div>
+                                <div className="flex items-start justify-between gap-4">
                                     <div className="flex items-baseline gap-1">
                                         <p className="text-4xl font-black text-[#26c6da] tracking-tighter">
                                             {formatCurrency(product.price)}
@@ -93,14 +118,17 @@ export default function ProductDetailModal({ product, children }: ProductDetailM
                                     </div>
                                 </div>
                             </div>
+                            </div>
                         </div>
 
                         {/* Actions Footer */}
-                        <div className="flex items-center gap-4 pt-10 mt-10 border-t border-slate-200">
-                            <div className="flex-1 drop-shadow-xl">
+                        <div className="flex flex-col gap-3 pt-4 mt-4 border-t border-slate-200">
+                            <div className="w-full drop-shadow-xl">
                                 <EditProductModal product={product} />
                             </div>
-                            <DeleteProductButton id={product._id} />
+                            <div className="w-full">
+                                <DeleteProductButton id={product._id} />
+                            </div>
                         </div>
 
                         {/* Decorative Background Icon */}

@@ -31,11 +31,11 @@ export default function DeleteProductButton({ id }: { id: string }) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    variant="destructive"
-                    size="icon"
-                    className="w-12 h-12 rounded-2xl bg-red-500 hover:bg-red-600 border-none shadow-xl transition-all hover:scale-105 active:scale-95"
+                    variant="outline"
+                    className="w-full h-12 px-5 rounded-2xl border border-red-200 bg-white text-red-500 hover:bg-red-50 hover:text-red-600 shadow-sm transition-all gap-2 text-xs font-black uppercase tracking-widest"
                 >
-                    <Trash2 className="w-5 h-4.5" />
+                    <Trash2 className="w-4 h-4" />
+                    Eliminar Producto
                 </Button>
             </DialogTrigger>
 

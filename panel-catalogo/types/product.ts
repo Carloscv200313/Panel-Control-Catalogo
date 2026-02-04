@@ -4,13 +4,13 @@ export interface Product {
     slug: string;
     description: string;
     price: number;
-    category: {
+    categories?: string[];
+    category?: {
         name: string;
         slug: string;
     };
     images: string[];
     tags?: string[];
-    isActive?: boolean;
     createdAt?: string;
     updatedAt?: string;
 }

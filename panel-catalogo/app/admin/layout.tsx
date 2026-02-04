@@ -10,13 +10,11 @@ import {
     ClipboardList,
     Users,
     BarChart3,
-    Search,
     Menu,
     X
 } from 'lucide-react';
 import { logout } from '@/app/actions/auth';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 
 const menuItems = [
@@ -117,13 +115,7 @@ export default function AdminLayout({
                             <Menu className="w-5 h-5 text-slate-600" />
                         </Button>
 
-                        <div className="max-w-md w-full relative group hidden md:block">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-[#26c6da] transition-colors" />
-                            <Input
-                                placeholder="Buscar..."
-                                className="pl-11 bg-slate-100 border-transparent focus-visible:ring-1 focus-visible:ring-[#26c6da] h-10 rounded-xl w-full text-sm"
-                            />
-                        </div>
+                        <div className="flex-1" />
                     </div>
 
                     <div className="flex items-center gap-3 sm:gap-5">
